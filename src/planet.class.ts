@@ -1,6 +1,5 @@
 import * as BABYLON from 'babylonjs';
 
-import './assets/texture/grass.jpg';
 import { GameObject } from './game-object.interface';
 
 export class Planet implements GameObject {
@@ -19,7 +18,11 @@ export class Planet implements GameObject {
 
     init(): void {
         this._material = new BABYLON.StandardMaterial("texture1", this._scene);
-        this._material.diffuseTexture = new BABYLON.Texture(require("assets/texture/grass.jpg"), this._scene);
+        const texture: BABYLON.Texture = new BABYLON.Texture(require("./assets/texture/grass.jpg"), this._scene);
+        texture.uScale = 10;
+        texture.vScale = 10;
+        this._material.diffuseTexture = texture;
+        // this._material.diffuseTexture.vScale = 5.0;
         this._mesh = BABYLON.MeshBuilder.CreateSphere('sphere1', {segments: 16, diameter: this._diameter}, this._scene);
         this._mesh.position = this._position;
         this._mesh.checkCollisions = true;
