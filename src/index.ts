@@ -18,8 +18,10 @@ class Game {
 		// Create canvas and engine
 		this._canvas = document.getElementById(canvasElement) as HTMLCanvasElement;
 		this._engine = new BABYLON.Engine(this._canvas, true);
-
+        this._gameObjects = [];
 	}
+
+
 
 	createScene() : void {
 		this._scene = new BABYLON.Scene(this._engine);
@@ -35,14 +37,17 @@ class Game {
         this._light = new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(0,1,0), this._scene);
         this._light.intensity = 0.4;
 
-        this._gameObjects = [];
+        this.generatePlanets();
+
+        this._gameObjects.forEach((object) => object.init());
+	}
+
+    generatePlanets(): void {
         this._gameObjects.push(new Planet(new BABYLON.Vector3(0, 0, 0), 50, this._scene));
         this._gameObjects.push(new Planet(new BABYLON.Vector3(200, 0, 0), 25, this._scene));
         this._gameObjects.push(new Planet(new BABYLON.Vector3(100, 0, 100), 25, this._scene));
         this._gameObjects.push(new Planet(new BABYLON.Vector3(100, 200, 100), 10, this._scene));
-
-        this._gameObjects.forEach((object) => object.init());
-	}
+    }
 
 	animate() : void {
 		this._engine.runRenderLoop(() => {
