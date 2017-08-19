@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
@@ -8,7 +9,7 @@ module.exports = {
 		rules: [
 			{
 				test: /\.tsx?$/,
-				use: 'ts-loader',
+				use: 'awesome-typescript-loader',
 				exclude: /node_modules/
 			},
 			{
@@ -34,6 +35,11 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'Babylon',
 			template: 'index.ejs'
+		}),
+		new webpack.ProvidePlugin({
+			// BABYLON: 'babylonjs',
+			'window.CANNON': 'cannon',
+			'CANNON': 'cannon'
 		})
 	],
 	devtool: 'inline-source-map',

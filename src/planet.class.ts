@@ -5,12 +5,13 @@ import { GameObject } from './game-object.interface';
 export class Planet implements GameObject {
 	
     private _position: BABYLON.Vector3;
-    private _diameter: number;
     private _mesh: BABYLON.Mesh;
     private _material: BABYLON.StandardMaterial;
     private _scene: BABYLON.Scene;
+    private _diameter: number;
+    private _gravity: number;
 
-    constructor(position: BABYLON.Vector3, diameter: number, scene: BABYLON.Scene) {
+    constructor(position: BABYLON.Vector3, diameter: number, gravity: number, scene: BABYLON.Scene) {
         this._position = position;
         this._diameter = diameter;
         this._scene = scene;
@@ -22,11 +23,10 @@ export class Planet implements GameObject {
         texture.uScale = 10;
         texture.vScale = 10;
         this._material.diffuseTexture = texture;
-        // this._material.diffuseTexture.vScale = 5.0;
-        this._mesh = BABYLON.MeshBuilder.CreateSphere('sphere1', {segments: 16, diameter: this._diameter}, this._scene);
+        this._mesh = BABYLON.MeshBuilder.CreateSphere('sphere1', {diameter: this._diameter}, this._scene);
         this._mesh.position = this._position;
-        this._mesh.checkCollisions = true;
         this._mesh.material = this._material;
+        this._mesh.physicsImpostor = new BABYLON.PhysicsImpostor(this._mesh, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0, restitution: 0.9 }, this._scene);
     }
 
     update(): void {
